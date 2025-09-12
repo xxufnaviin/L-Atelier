@@ -18,6 +18,7 @@ import nltk
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import os
 import sys
+import datetime
 
 def setup_nltk():
     """
@@ -79,27 +80,22 @@ def analyze_sentiment(text):
 
 def process_video_sentiment(df):
     """
-    Process sentiment analysis for video transcriptions in the DataFrame.
+    Process sentiment analysis for video transcriptions and tags in the DataFrame.
     
     Args:
         df (pd.DataFrame): DataFrame containing video data
         
     Returns:
-        pd.DataFrame: DataFrame with added sentiment column
+        pd.DataFrame: DataFrame with added sentiment columns
     """
     
     # Create a copy of the DataFrame to avoid modifying the original
     df_processed = df.copy()
     
-    # Apply sentiment analysis to the transcription column only
-    df_processed['sentiment'] = df_processed['transcription'].apply(analyze_sentiment)
+    df_processed['sentiment_transcription'] = df_processed['transcription'].apply(analyze_sentiment)
+    df_processed['sentiment_tags'] = df_processed['tags'].apply(lambda x: analyze_sentiment(' '.join(x)) if isinstance(x, list) else 0.0)
     
-    print(f" Sentiment analysis completed for {len(df_processed)} records")
-    
-    # Count sentiment categories
-    positive_count = (df_processed['sentiment'] > 0.05).sum()
-    negative_count = (df_processed['sentiment'] < -0.05).sum()
-    neutral_count = len(df_processed) - positive_count - negative_count
+    print(f"Sentiment analysis completed for {len(df_processed)} records")
     
     return df_processed
 
@@ -142,6 +138,11 @@ def main(df):
         print("Error: 'transcription' column not found in the dataset")
         print(f"Available columns: {list(df.columns)}")
         sys.exit(1)
+
+    if 'tags' not in df.columns:
+        print("Error: 'tags' column not found in the dataset")
+        print(f"Available columns: {list(df.columns)}")
+        sys.exit(1)
     
     # Show info about the transcription data
     trans_count = df['transcription'].notna().sum()
@@ -153,6 +154,7 @@ def main(df):
     
     # Process sentiment analysis
     df_with_sentiment = process_video_sentiment(df)
+    df_with_sentiment['timestamp'] = datetime.datetime.now()
     
     # Save results
     save_results(df_with_sentiment, output_file)
