@@ -17,7 +17,7 @@ load_dotenv()
 TIKTOK_CSV = "pipeline/data/tiktok_collected_liked_videos.csv"
 YOUTUBE_CSV = "pipeline/data/USvideos.csv"
 AUDIO_DIR = "pipeline/audios"
-OUTPUT_DIR = "/ml/data"
+OUTPUT_DIR = "ml/data"
 
 # Ensure directories exist
 os.makedirs(AUDIO_DIR, exist_ok=True)
