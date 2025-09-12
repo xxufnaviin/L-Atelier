@@ -123,19 +123,19 @@ def save_results(df, output_path):
         print(f"Error saving results: {e}")
         sys.exit(1)
 
-def main():
+def main(df):
     """
     Main function to orchestrate the sentiment analysis process.
     """
     # Set up paths
-    input_file = "data/combined_videos.csv"
-    output_file = "data/analyzed_videos.csv"
+    # input_file = "ml/data/combined_videos.csv"  # not using anymore but passing df as params
+    output_file = "ml/data/analyzed_videos.csv" # i run from root backend
     
     # Setup NLTK
     setup_nltk()
     
     # Load video data
-    df = load_video_data(input_file)
+    df = df
     
     # Check if transcription column exists
     if 'transcription' not in df.columns:
