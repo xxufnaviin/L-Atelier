@@ -4,11 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Bot, MessageCircle, X, Send, Sparkles, TrendingUp, BarChart3, Users, Navigation, Wand2, Video, Target } from 'lucide-react';
+import { Bot, MessageCircle, X, Send, Sparkles, TrendingUp, BarChart3, Users } from 'lucide-react';
 import { chatPrompts, chatResponses } from '@/lib/data';
 import { useGlobalStore } from '@/lib/store';
-import { mcpService } from '@/lib/mcpService';
-import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
 // Dynamically import the chart component to avoid SSR issues
@@ -29,19 +27,14 @@ interface Message {
   isUser: boolean;
   timestamp: Date;
   chartData?: ChartData;
-  action?: 'navigate' | 'generate' | 'video_generate' | 'ask_question';
-  parameters?: any;
-  confidence?: number;
-  conversationState?: any;
 }
 
 export default function FloatingAIChat() {
   const { isChatOpen, openChat, closeChat } = useGlobalStore();
-  const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm your AI Trend Analyst. I can help you understand beauty trends, build recipes, generate predictions, and create videos. What would you like to know?",
+      text: "Hi! I'm your AI Trend Analyst. I can help you understand beauty trends, market insights, and campaign strategies. What would you like to know?",
       isUser: false,
       timestamp: new Date()
     }
@@ -221,7 +214,7 @@ export default function FloatingAIChat() {
     return null;
   };
 
-  const sendMessage = async (message: string) => {
+  const sendMessage = (message: string) => {
     const userMessage: Message = {
       id: Date.now().toString(),
       text: message,
@@ -233,62 +226,20 @@ export default function FloatingAIChat() {
     setInputMessage('');
     setIsTyping(true);
 
-    try {
-      // Use MCP service to analyze intent
-      console.log('Chatbot Debug - Analyzing message:', message);
-      const mcpResponse = await mcpService.analyzeIntent({
-        message,
-        previousMessages: messages.map(m => m.text),
-        currentPage: window.location.pathname
-      });
-      
-      console.log('Chatbot Debug - MCP Response:', mcpResponse);
-
-      // Generate chart data if applicable
+    // Simulate AI response with potential chart
+    setTimeout(() => {
       const chartData = generateChartData(message);
+      const hasChart = !!chartData;
       
-      // Get response text
-      let responseText = mcpResponse.message || chatResponses[message as keyof typeof chatResponses];
+      let response = chatResponses[message as keyof typeof chatResponses];
       
-      if (!responseText) {
-        if (chartData) {
-          responseText = "Here's the visual analysis you requested. The chart below shows the key insights from our trend data analysis.";
+      if (!response) {
+        if (hasChart) {
+          response = "Here's the visual analysis you requested. The chart below shows the key insights from our trend data analysis.";
         } else {
-          responseText = "I understand you're interested in beauty trends. Let me analyze the current data for you. Based on our latest insights, I recommend focusing on emerging trends like 'Vanilla Girl' aesthetic and 'Glass Skin' techniques, which are showing strong growth in the Malaysian market.";
+          response = "I understand you're interested in beauty trends. Let me analyze the current data for you. Based on our latest insights, I recommend focusing on emerging trends like 'Vanilla Girl' aesthetic and 'Glass Skin' techniques, which are showing strong growth in the Malaysian market.";
         }
       }
-      
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: responseText,
-        isUser: false,
-        timestamp: new Date(),
-        chartData: chartData || undefined,
-        action: mcpResponse.action,
-        parameters: mcpResponse.parameters,
-        confidence: mcpResponse.confidence,
-        conversationState: mcpResponse.conversationState
-      };
-
-      setIsTyping(false);
-      setMessages(prev => [...prev, aiMessage]);
-
-      // Execute actions based on MCP response
-      if (mcpResponse.action === 'navigate' && mcpResponse.parameters) {
-        setTimeout(() => {
-          const params = mcpService.formatNavigationParams(mcpResponse.parameters);
-          const action = mcpResponse.parameters.action ? `&action=${mcpResponse.parameters.action}` : '';
-          router.push(`/recipe-builder?${params}${action}`);
-        }, 1500); // Small delay to let user read the message
-      }
-
-    } catch (error) {
-      console.error('MCP Service error:', error);
-      
-      // Fallback to original behavior
-      const chartData = generateChartData(message);
-      const response = chatResponses[message as keyof typeof chatResponses] || 
-        "I'm here to help you with beauty trends and campaign strategies. What would you like to explore?";
       
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -300,7 +251,7 @@ export default function FloatingAIChat() {
 
       setIsTyping(false);
       setMessages(prev => [...prev, aiMessage]);
-    }
+    }, 1000);
   };
 
   const handleQuickPrompt = (prompt: string) => {
@@ -385,55 +336,6 @@ export default function FloatingAIChat() {
                       )}
                       <p className="leading-relaxed">{message.text}</p>
                       
-                      {/* Action Buttons */}
-                      {message.action && !message.isUser && (
-                        <div className="mt-3 flex gap-2">
-                          {message.action === 'navigate' && (
-                            <Button
-                              size="sm"
-                              onClick={() => {
-                                const params = mcpService.formatNavigationParams(message.parameters);
-                                router.push(`/recipe-builder?${params}`);
-                              }}
-                              className="bg-loreal-red hover:bg-loreal-red/90 text-white text-xs"
-                            >
-                              <Navigation className="h-3 w-3 mr-1" />
-                              Go to Recipe Builder
-                            </Button>
-                          )}
-                          {message.action === 'generate' && (
-                            <Button
-                              size="sm"
-                              onClick={() => {
-                                router.push('/recipe-builder?action=generate');
-                              }}
-                              className="bg-green-600 hover:bg-green-700 text-white text-xs"
-                            >
-                              <Wand2 className="h-3 w-3 mr-1" />
-                              Generate Prediction
-                            </Button>
-                          )}
-                          {message.action === 'video_generate' && (
-                            <Button
-                              size="sm"
-                              onClick={() => {
-                                const params = mcpService.formatNavigationParams(message.parameters);
-                                router.push(`/recipe-builder?${params}&action=video`);
-                              }}
-                              className="bg-purple-600 hover:bg-purple-700 text-white text-xs"
-                            >
-                              <Wand2 className="h-3 w-3 mr-1" />
-                              Create Video
-                            </Button>
-                          )}
-                          {message.confidence && (
-                            <span className="text-xs text-gray-500 self-center">
-                              {Math.round(message.confidence * 100)}% confident
-                            </span>
-                          )}
-                        </div>
-                      )}
-                      
                       {/* Chart Display */}
                       {message.chartData && !message.isUser && (
                         <div className="mt-4 p-3 bg-white rounded-lg border">
@@ -504,40 +406,6 @@ export default function FloatingAIChat() {
                   >
                     <BarChart3 className="h-3 w-3 text-loreal-red" />
                     <span>Compare trends</span>
-                  </button>
-                </div>
-                
-                {/* Smart Recipe Building Prompts */}
-                <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1 mt-2">
-                  <button
-                    onClick={() => {
-                      // Direct navigation for quick actions
-                      router.push('/recipe-builder?audio=audio_2&keyword=kw_2&platform=TikTok&audience=Gen Z&action=generate');
-                    }}
-                    className="flex-shrink-0 flex items-center gap-2 px-3 py-2 text-xs bg-rose-50 hover:bg-rose-100 rounded-lg border border-rose-200 transition-colors whitespace-nowrap"
-                  >
-                    <Wand2 className="h-3 w-3 text-rose-600" />
-                    <span>Vanilla Girl Recipe</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      // Direct navigation for glass skin video
-                      router.push('/recipe-builder?audio=audio_2&keyword=kw_1&platform=Instagram&audience=Millennials&action=video');
-                    }}
-                    className="flex-shrink-0 flex items-center gap-2 px-3 py-2 text-xs bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition-colors whitespace-nowrap"
-                  >
-                    <Video className="h-3 w-3 text-blue-600" />
-                    <span>Glass Skin Video</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      // Direct navigation for dewy makeup prediction
-                      router.push('/recipe-builder?audio=audio_2&keyword=kw_5&platform=TikTok&audience=Gen Z&action=generate');
-                    }}
-                    className="flex-shrink-0 flex items-center gap-2 px-3 py-2 text-xs bg-green-50 hover:bg-green-100 rounded-lg border border-green-200 transition-colors whitespace-nowrap"
-                  >
-                    <Target className="h-3 w-3 text-green-600" />
-                    <span>Dewy Makeup Prediction</span>
                   </button>
                 </div>
               </div>
