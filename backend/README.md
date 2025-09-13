@@ -1,6 +1,6 @@
 # Backend
 
-This directory contains the backend services for the Floor-17 project.
+This directory contains the backend services for the L'Atelier project.
 
 ## Structure
 
