@@ -106,7 +106,24 @@ def save_results(df, output_path):
         print(f"Error saving results: {e}")
         sys.exit(1)
 
-def main():
+def main(df):
+    """
+    Adds a 'demographics' column to the given DataFrame.
+    
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+        
+    Returns:
+        pd.DataFrame: The DataFrame with the 'demographics' column.
+    """
+    # Analyze demographics and add the new column
+    print("Starting demographic analysis...")
+    df['demographics'] = df.apply(analyze_demographics, axis=1)
+    print("✓ Demographic analysis completed.")
+    
+    return df
+
+if __name__ == "__main__":
     """
     Main function to orchestrate the demographic analysis process.
     """
@@ -117,13 +134,8 @@ def main():
     df = load_video_data(input_file)
     
     # Analyze demographics and add the new column
-    print("Starting demographic analysis...")
-    df['demographics'] = df.apply(analyze_demographics, axis=1)
-    print("✓ Demographic analysis completed.")
+    df = main(df)
     
     # Save results
     save_results(df, output_file)
     print(f"A new file has been created at {output_file} with the 'demographics' column.")
-
-if __name__ == "__main__":
-    main()
