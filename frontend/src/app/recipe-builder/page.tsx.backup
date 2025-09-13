@@ -8,7 +8,6 @@ import LineChartComponent from '@/components/LineChartComponent';
 import VideoMosaic from '@/components/VideoMosaic';
 import VideoRequirementsChat from '@/components/VideoRequirementsChat';
 import { audios, keywords, predictionData } from '@/lib/data';
-import { generateVideoForRecipe, sampleVideos } from '@/lib/videoData';
 import { Sparkles, Target, TrendingUp, Play, Crown, Video, Download, Share, Wand2, User, Heart, Zap, MessageSquare } from 'lucide-react';
 
 export default function RecipeBuilder() {
@@ -22,66 +21,21 @@ export default function RecipeBuilder() {
   
   // Video Generator States
   const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
-  const [generatedVideo, setGeneratedVideo] = useState<any>(null);
+  const [generatedVideo, setGeneratedVideo] = useState(null);
   const [videoPrompt, setVideoPrompt] = useState('');
   const [showVideoGenerator, setShowVideoGenerator] = useState(false);
   
   // Video Requirements States
   const [showRequirementsChat, setShowRequirementsChat] = useState(false);
-  const [videoRequirements, setVideoRequirements] = useState<any[]>([]);
+  const [videoRequirements, setVideoRequirements] = useState([]);
   const [requirementsSummary, setRequirementsSummary] = useState('');
 
-  // Check for URL parameters to auto-apply filters and actions
+  // Check for URL parameters to show #VanillaGirl preset
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    
-    // Handle legacy trend parameter
     const trend = urlParams.get('trend');
     if (trend === 'VanillaGirl') {
       setShowVanillaGirlPreset(true);
-    }
-
-    // Handle MCP-generated parameters
-    const audio = urlParams.get('audio');
-    const keyword = urlParams.get('keyword');
-    const platform = urlParams.get('platform');
-    const audience = urlParams.get('audience');
-    const action = urlParams.get('action');
-
-    // Auto-apply filters from chatbot
-    if (audio) setSelectedAudio(audio);
-    if (keyword) setSelectedKeyword(keyword);
-    if (platform) setSelectedPlatform(platform);
-    if (audience) {
-      // Map audience values properly
-      const audienceMap: Record<string, string> = {
-        'Gen Z': 'Gen Z',
-        'Millennials': 'Millennials', 
-        'All': 'All'
-      };
-      setSelectedAudience(audienceMap[audience] || audience);
-    }
-
-    // Auto-execute actions
-    if (action === 'generate' && audio && keyword && platform && audience) {
-      setTimeout(() => {
-        generatePrediction();
-      }, 500); // Small delay to let state update
-    }
-
-    if (action === 'video' && audio && keyword && platform && audience) {
-      setTimeout(() => {
-        generatePrediction();
-        setTimeout(() => {
-          generateVideoWithRequirements();
-        }, 1000);
-      }, 500);
-    }
-
-    // Clean URL after processing
-    if (audio || keyword || platform || audience || action) {
-      const newUrl = window.location.pathname;
-      window.history.replaceState({}, '', newUrl);
     }
   }, []);
 
@@ -126,7 +80,7 @@ export default function RecipeBuilder() {
   };
 
   // Requirements handling functions
-  const handleRequirementsComplete = (requirements: any, summary: string) => {
+  const handleRequirementsComplete = (requirements, summary) => {
     setVideoRequirements(requirements);
     setRequirementsSummary(summary);
     setShowRequirementsChat(false);
@@ -158,21 +112,16 @@ export default function RecipeBuilder() {
     
     setVideoPrompt(basePrompt);
     
-    // Generate AI video using actual video content (3 seconds)
+    // Simulate AI video generation (3 seconds)
     setTimeout(() => {
-      const generatedVideoData = generateVideoForRecipe(selectedAudio, selectedKeyword, selectedPlatform);
-      
       const mockVideo = {
         id: Date.now(),
         title: `${keywordName} Tutorial`,
-        thumbnail: generatedVideoData.thumbnailUrl,
-        videoUrl: generatedVideoData.videoUrl,
-        duration: generatedVideoData.duration,
+        thumbnail: '/placeholder-video1.jpg',
+        duration: '0:45',
         prompt: basePrompt,
         requirements: customRequirements || requirementsSummary,
-        status: 'ready',
-        creator: generatedVideoData.creator,
-        likes: generatedVideoData.likes
+        status: 'ready'
       };
       
       setGeneratedVideo(mockVideo);
@@ -541,32 +490,15 @@ export default function RecipeBuilder() {
                     {generatedVideo && !isGeneratingVideo && (
                       <div className="space-y-4">
                         <div className="relative">
-                          <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                            {generatedVideo.videoUrl ? (
-                              <video 
-                                width="100%" 
-                                height="100%" 
-                                poster={generatedVideo.thumbnail}
-                                controls
-                                muted
-                                loop
-                                className="w-full h-full object-cover"
-                              >
-                                <source src={generatedVideo.videoUrl} type="video/mp4" />
-                                <p>Your browser doesn't support HTML5 video.</p>
-                              </video>
-                            ) : (
-                              <>
-                                <img 
-                                  src={generatedVideo.thumbnail} 
-                                  alt={generatedVideo.title}
-                                  className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                                  <Play className="h-12 w-12 text-white" />
-                                </div>
-                              </>
-                            )}
+                          <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                            <img 
+                              src={generatedVideo.thumbnail} 
+                              alt={generatedVideo.title}
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                              <Play className="h-12 w-12 text-white" />
+                            </div>
                             <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
                               {generatedVideo.duration}
                             </div>
