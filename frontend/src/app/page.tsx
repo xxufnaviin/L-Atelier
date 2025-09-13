@@ -73,36 +73,57 @@ export default function Dashboard() {
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         <Link href="/recipe-builder">
-          <Button variant="outline" className="h-auto p-4 flex flex-col items-center gap-2 w-full">
+          <Button 
+            variant="outline" 
+            className="h-auto p-4 flex flex-col items-center gap-2 w-full hover:opacity-90 transition-opacity"
+            style={{ backgroundColor: '#d473e6', borderColor: '#d473e6', color: 'white' }}
+          >
             <Sparkles className="h-6 w-6" />
             <span className="font-medium">Create Recipe</span>
-            <span className="text-xs text-muted-foreground">Build trend combinations</span>
+            <span className="text-xs opacity-90">Build trend combinations</span>
           </Button>
         </Link>
         <Link href="/recipe-builder">
-          <Button variant="outline" className="h-auto p-4 flex flex-col items-center gap-2 w-full">
+          <Button 
+            variant="outline" 
+            className="h-auto p-4 flex flex-col items-center gap-2 w-full hover:opacity-90 transition-opacity"
+            style={{ backgroundColor: '#b6e0d4', borderColor: '#b6e0d4', color: '#1f2937' }}
+          >
             <Play className="h-6 w-6" />
             <span className="font-medium">Generate Video</span>
-            <span className="text-xs text-muted-foreground">Create trending videos</span>
+            <span className="text-xs opacity-80">Create trending videos</span>
           </Button>
         </Link>
-        <Button variant="outline" className="h-auto p-4 flex flex-col items-center gap-2 w-full" onClick={openChat}>
+        <Button 
+          variant="outline" 
+          className="h-auto p-4 flex flex-col items-center gap-2 w-full hover:opacity-90 transition-opacity" 
+          onClick={openChat}
+          style={{ backgroundColor: '#fae97a', borderColor: '#fae97a', color: '#1f2937' }}
+        >
           <Bot className="h-6 w-6" />
           <span className="font-medium">AI Insights</span>
-          <span className="text-xs text-muted-foreground">Chat with AI analyst</span>
+          <span className="text-xs opacity-80">Chat with AI analyst</span>
         </Button>
         <Link href="/trend-analyst">
-          <Button variant="outline" className="h-auto p-4 flex flex-col items-center gap-2 w-full">
+          <Button 
+            variant="outline" 
+            className="h-auto p-4 flex flex-col items-center gap-2 w-full hover:opacity-90 transition-opacity"
+            style={{ backgroundColor: '#f1c5fa', borderColor: '#f1c5fa', color: '#1f2937' }}
+          >
             <TrendingUp className="h-6 w-6" />
             <span className="font-medium">Analyze Trends</span>
-            <span className="text-xs text-muted-foreground">Deep trend analytics</span>
+            <span className="text-xs opacity-80">Deep trend analytics</span>
           </Button>
         </Link>
         <Link href="/trending-keywords">
-          <Button variant="outline" className="h-auto p-4 flex flex-col items-center gap-2 w-full">
+          <Button 
+            variant="outline" 
+            className="h-auto p-4 flex flex-col items-center gap-2 w-full hover:opacity-90 transition-opacity"
+            style={{ backgroundColor: '#fac5d7', borderColor: '#fac5d7', color: '#1f2937' }}
+          >
             <Hash className="h-6 w-6" />
             <span className="font-medium">Browse Keywords</span>
-            <span className="text-xs text-muted-foreground">Explore trending terms</span>
+            <span className="text-xs opacity-80">Explore trending terms</span>
           </Button>
         </Link>
       </div>
@@ -135,26 +156,38 @@ export default function Dashboard() {
             >
               {latestTrends.map((trend, index) => (
                 <div key={trend.id} className="min-w-full">
-                  <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                      <div>
-                        <h3 className="text-xl font-bold text-loreal-red">{trend.name}</h3>
-                        <p className="text-muted-foreground">Trending on {trend.platform}</p>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="text-center">
-                          <p className="text-2xl font-bold text-green-600">{trend.engagement}</p>
-                          <p className="text-sm text-muted-foreground">Engagement</p>
+                  <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-10 shadow-lg border border-gray-200">
+                    <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+                      {/* Left: Hashtag and Platform */}
+                      <div className="text-center lg:text-left flex-1">
+                        <div className="inline-flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-full shadow-sm mb-3">
+                          <div className="w-1.5 h-1.5 bg-loreal-red rounded-full animate-pulse"></div>
+                          <span className="text-xs font-medium text-gray-600">LIVE TRENDING</span>
                         </div>
-                        <div className="text-center">
-                          <p className="text-2xl font-bold text-blue-600">{trend.growth}</p>
-                          <p className="text-sm text-muted-foreground">Growth</p>
+                        <h3 className="text-2xl font-bold text-loreal-red mb-3 tracking-tight">{trend.name}</h3>
+                        <div className="flex items-center justify-center lg:justify-start gap-2">
+                          <span className="text-gray-600 text-base">Trending on</span>
+                          <span className="bg-black text-white px-3 py-1 rounded-full text-base font-semibold">{trend.platform}</span>
                         </div>
                       </div>
-                      <div className="flex justify-end">
+                      
+                      {/* Center: Metrics */}
+                      <div className="flex gap-6 flex-1 justify-center">
+                        <div className="text-center bg-white/70 rounded-xl p-4 shadow-md border border-green-200 min-w-[100px]">
+                          <p className="text-2xl font-bold text-green-600 mb-1">{trend.engagement}</p>
+                          <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Engagement</p>
+                        </div>
+                        <div className="text-center bg-white/70 rounded-xl p-4 shadow-md border border-blue-200 min-w-[100px]">
+                          <p className="text-2xl font-bold text-blue-600 mb-1">{trend.growth}</p>
+                          <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Growth</p>
+                        </div>
+                      </div>
+                      
+                      {/* Right: Action Button */}
+                      <div className="flex justify-center flex-1">
                         <Link href={`/trending-hashtags`}>
-                          <Button variant="outline">
-                            <Eye className="h-4 w-4 mr-2" />
+                          <Button className="bg-loreal-red hover:bg-loreal-red/90 text-white px-4 py-4 rounded-md font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+                            <Eye className="h-5 w-5 mr-3" />
                             View Details
                           </Button>
                         </Link>

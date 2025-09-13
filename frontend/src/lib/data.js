@@ -85,7 +85,8 @@ export const videos = [
   {
     id: 'vid_1',
     title: 'Glass Skin Tutorial',
-    thumbnailUrl: '/placeholder-video1.jpg',
+    thumbnailUrl: '/video-thumbnails/glass-skin-tutorial.svg',
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
     likes: 15000,
     platform: 'TikTok',
     creator: '@skincare_guru',
@@ -97,7 +98,8 @@ export const videos = [
   {
     id: 'vid_2',
     title: 'Vanilla Girl Makeup Look',
-    thumbnailUrl: '/placeholder-video2.jpg',
+    thumbnailUrl: '/video-thumbnails/vanilla-girl-makeup.svg',
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4',
     likes: 23000,
     platform: 'Instagram',
     creator: '@makeup_artist',
@@ -109,7 +111,8 @@ export const videos = [
   {
     id: 'vid_3',
     title: '5-Step Korean Routine',
-    thumbnailUrl: '/placeholder-video3.jpg',
+    thumbnailUrl: '/video-thumbnails/korean-routine.svg',
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_5mb.mp4',
     likes: 8500,
     platform: 'YouTube',
     creator: '@k_beauty_tips',
@@ -121,7 +124,8 @@ export const videos = [
   {
     id: 'vid_4',
     title: 'Dewy Skin Secrets',
-    thumbnailUrl: '/placeholder-video4.jpg',
+    thumbnailUrl: '/video-thumbnails/dewy-skin-secrets.svg',
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
     likes: 12000,
     platform: 'TikTok',
     creator: '@glowup_queen',
@@ -133,7 +137,8 @@ export const videos = [
   {
     id: 'vid_5',
     title: 'Natural Beauty Routine',
-    thumbnailUrl: '/placeholder-video5.jpg',
+    thumbnailUrl: '/video-thumbnails/natural-beauty-routine.svg',
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4',
     likes: 9800,
     platform: 'Instagram',
     creator: '@natural_beauty',
@@ -145,7 +150,8 @@ export const videos = [
   {
     id: 'vid_6',
     title: 'Glass Skin with Aesthetic Vibes',
-    thumbnailUrl: '/placeholder-video1.jpg',
+    thumbnailUrl: '/video-thumbnails/glass-skin-aesthetic.svg',
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
     likes: 18500,
     platform: 'TikTok',
     creator: '@aesthetic_beauty',
@@ -157,7 +163,8 @@ export const videos = [
   {
     id: 'vid_7',
     title: 'Vanilla Girl Look Tutorial',
-    thumbnailUrl: '/placeholder-video2.jpg',
+    thumbnailUrl: '/video-thumbnails/vanilla-girl-tutorial.svg',
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4',
     likes: 31000,
     platform: 'Instagram',
     creator: '@minimal_makeup',
@@ -169,7 +176,8 @@ export const videos = [
   {
     id: 'vid_8',
     title: 'Korean Beauty Secrets',
-    thumbnailUrl: '/placeholder-video3.jpg',
+    thumbnailUrl: '/video-thumbnails/korean-beauty-secrets.svg',
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_5mb.mp4',
     likes: 14200,
     platform: 'YouTube',
     creator: '@kbeauty_expert',
