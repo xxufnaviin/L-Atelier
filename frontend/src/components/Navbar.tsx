@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { useGlobalStore } from '@/lib/store';
 import { cn } from '@/lib/utils';
@@ -113,236 +112,250 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <span className="font-italiana text-2xl font-medium text-gray-900 tracking-wide">
-              L'Atelier
-            </span>
-          </Link>
-
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "text-sm font-medium transition-colors hover:text-loreal-red",
-                  pathname === item.href
-                    ? "text-loreal-red border-b-2 border-loreal-red pb-1"
-                    : "text-gray-600"
-                )}
-              >
-                {item.label}
+    <>
+      <nav className="border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center h-16">
+            {/* Logo */}
+            <div className="flex-1">
+              <Link href="/" className="flex items-center">
+                <span className="font-italiana text-2xl font-medium text-gray-900 tracking-wide">
+                  L'Atelier
+                </span>
               </Link>
-            ))}
-          </div>
-
-          {/* Right Section - View Toggle & Notifications */}
-          <div className="flex items-center space-x-4">
-            {/* View Toggle */}
-            <div className="flex items-center space-x-3">
-              <span className={cn(
-                "text-sm font-medium transition-colors",
-                !isGlobalView ? "text-loreal-red" : "text-gray-600"
-              )}>
-                Malaysia
-              </span>
-              <Switch
-                checked={isGlobalView}
-                onCheckedChange={toggleView}
-              />
-              <span className={cn(
-                "text-sm font-medium transition-colors",
-                isGlobalView ? "text-loreal-red" : "text-gray-600"
-              )}>
-                Global
-              </span>
             </div>
 
-            {/* Notification Button */}
-            <div className="relative">
-              <Button
-                ref={buttonRef}
-                variant="ghost"
-                size="sm"
-                onClick={handleNotificationClick}
-                className={cn(
-                  "relative p-2 hover:bg-gray-100 rounded-full transition-colors",
-                  showNotificationDropdown && "bg-gray-100"
-                )}
-              >
-                <Bell className="h-5 w-5 text-gray-600 hover:text-loreal-red transition-colors" />
-                {hasNotifications && (
-                  <div className="absolute -top-1 -right-1 h-5 w-5 bg-loreal-red rounded-full flex items-center justify-center">
-                    <span className="text-xs font-bold text-white">
-                      {notificationCount > 9 ? '9+' : notificationCount}
-                    </span>
-                  </div>
-                )}
-              </Button>
-
-              {/* Notification Dropdown */}
-              {showNotificationDropdown && (
-                <div
-                  ref={dropdownRef}
-                  className="absolute right-4 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-30 max-h-96 overflow-y-auto"
-                  style={{ maxWidth: 'calc(100vw - 2rem)' }}
-                >
-                  {/* Header */}
-                  <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-                    <h3 className="font-semibold text-gray-900">Notifications</h3>
-                    <div className="flex items-center space-x-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleMarkAllAsRead}
-                        className="text-xs text-loreal-red hover:text-loreal-red hover:bg-red-50"
-                      >
-                        Mark all read
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setShowNotificationDropdown(false)}
-                        className="p-1 hover:bg-gray-100 rounded-full"
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Notifications List */}
-                  <div className="py-2">
-                    {notifications.length === 0 ? (
-                      <div className="px-4 py-8 text-center text-gray-500">
-                        <Bell className="h-8 w-8 mx-auto mb-2 text-gray-300" />
-                        <p className="text-sm">No new notifications</p>
-                      </div>
-                    ) : (
-                      notifications.map((notification) => (
-                        <div
-                          key={notification.id}
-                          className={cn(
-                            "px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 last:border-b-0",
-                            !notification.read && "bg-blue-50/50"
-                          )}
-                          onClick={() => handleMarkAsRead(notification.id)}
-                        >
-                          <div className="flex items-start space-x-3">
-                            <div className={cn("mt-1 p-2 rounded-full bg-gray-100", notification.color)}>
-                              <notification.icon className="h-4 w-4" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between">
-                                <p className="text-sm font-medium text-gray-900 truncate">
-                                  {notification.title}
-                                </p>
-                                {!notification.read && (
-                                  <div className="ml-2 h-2 w-2 bg-loreal-red rounded-full"></div>
-                                )}
-                              </div>
-                              <p className="mt-1 text-xs text-gray-600 leading-relaxed" style={{
-                                display: '-webkit-box',
-                                WebkitLineClamp: 2,
-                                WebkitBoxOrient: 'vertical',
-                                overflow: 'hidden'
-                              }}>
-                                {notification.message}
-                              </p>
-                              <p className="mt-1 text-xs text-gray-400">
-                                {notification.time}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      ))
+            {/* Navigation Links - Centered */}
+            <div className="flex-1 flex justify-center">
+              <div className="hidden md:flex items-center space-x-8">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "text-sm font-medium transition-colors hover:text-loreal-red",
+                      pathname === item.href
+                        ? "text-loreal-red border-b-2 border-loreal-red pb-1"
+                        : "text-gray-600"
                     )}
-                  </div>
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
 
-                  {/* Footer */}
-                  {notifications.length > 0 && (
-                    <div className="px-4 py-3 border-t border-gray-100">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="w-full text-center text-sm text-loreal-red hover:text-loreal-red hover:bg-red-50"
-                        onClick={() => {
-                          setShowNotificationDropdown(false);
-                          // Navigate to notifications page if exists
-                        }}
-                      >
-                        View all notifications
-                      </Button>
+            {/* Right Section - View Toggle & Notifications */}
+            <div className="flex-1 flex items-center justify-end space-x-4">
+              {/* View Toggle - Segmented Switch */}
+              <div className="relative inline-flex bg-gray-100 rounded-full p-1">
+                <button
+                  onClick={() => !isGlobalView || toggleView()}
+                  className={cn(
+                    "relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-200",
+                    !isGlobalView 
+                      ? "bg-white text-loreal-red shadow-sm" 
+                      : "text-gray-500 hover:text-gray-700"
+                  )}
+                >
+                  Malaysia
+                </button>
+                <button
+                  onClick={() => isGlobalView || toggleView()}
+                  className={cn(
+                    "relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-200",
+                    isGlobalView 
+                      ? "bg-white text-loreal-red shadow-sm" 
+                      : "text-gray-500 hover:text-gray-700"
+                  )}
+                >
+                  Global
+                </button>
+              </div>
+
+              {/* Notification Button */}
+              <div className="relative">
+                <Button
+                  ref={buttonRef}
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleNotificationClick}
+                  className={cn(
+                    "relative w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors flex items-center justify-center p-0",
+                    showNotificationDropdown && "bg-gray-200"
+                  )}
+                >
+                  <Bell className="h-5 w-5 text-gray-600 hover:text-loreal-red transition-colors" />
+                  {hasNotifications && (
+                    <div className="absolute -top-1 -right-1 h-5 w-5 bg-loreal-red rounded-full flex items-center justify-center">
+                      <span className="text-xs font-bold text-white">
+                        {notificationCount > 9 ? '9+' : notificationCount}
+                      </span>
                     </div>
                   )}
-                </div>
-              )}
-            </div>
+                </Button>
 
-            {/* Profile Button */}
-            <div className="relative">
-              <Button
-                ref={profileButtonRef}
-                variant="ghost"
-                size="sm"
-                onClick={handleProfileClick}
-                className={cn(
-                  "relative p-2 hover:bg-gray-100 rounded-full transition-colors",
-                  showProfileDropdown && "bg-gray-100"
+                {/* Notification Dropdown */}
+                {showNotificationDropdown && (
+                  <div
+                    ref={dropdownRef}
+                    className="absolute right-4 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-30 max-h-96 overflow-y-auto"
+                    style={{ maxWidth: 'calc(100vw - 2rem)' }}
+                  >
+                    {/* Header */}
+                    <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                      <h3 className="font-semibold text-gray-900">Notifications</h3>
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={handleMarkAllAsRead}
+                          className="text-xs text-loreal-red hover:text-loreal-red hover:bg-red-50"
+                        >
+                          Mark all read
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setShowNotificationDropdown(false)}
+                          className="p-1 hover:bg-gray-100 rounded-full"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Notifications List */}
+                    <div className="py-2">
+                      {notifications.length === 0 ? (
+                        <div className="px-4 py-8 text-center text-gray-500">
+                          <Bell className="h-8 w-8 mx-auto mb-2 text-gray-300" />
+                          <p className="text-sm">No new notifications</p>
+                        </div>
+                      ) : (
+                        notifications.map((notification) => (
+                          <div
+                            key={notification.id}
+                            className={cn(
+                              "px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 last:border-b-0",
+                              !notification.read && "bg-blue-50/50"
+                            )}
+                            onClick={() => handleMarkAsRead(notification.id)}
+                          >
+                            <div className="flex items-start space-x-3">
+                              <div className={cn("mt-1 p-2 rounded-full bg-gray-100", notification.color)}>
+                                <notification.icon className="h-4 w-4" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between">
+                                  <p className="text-sm font-medium text-gray-900 truncate">
+                                    {notification.title}
+                                  </p>
+                                  {!notification.read && (
+                                    <div className="ml-2 h-2 w-2 bg-loreal-red rounded-full"></div>
+                                  )}
+                                </div>
+                                <p className="mt-1 text-xs text-gray-600 leading-relaxed" style={{
+                                  display: '-webkit-box',
+                                  WebkitLineClamp: 2,
+                                  WebkitBoxOrient: 'vertical',
+                                  overflow: 'hidden'
+                                }}>
+                                  {notification.message}
+                                </p>
+                                <p className="mt-1 text-xs text-gray-400">
+                                  {notification.time}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+
+                    {/* Footer */}
+                    {notifications.length > 0 && (
+                      <div className="px-4 py-3 border-t border-gray-100">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="w-full text-center text-sm text-loreal-red hover:text-loreal-red hover:bg-red-50"
+                          onClick={() => {
+                            setShowNotificationDropdown(false);
+                            // Navigate to notifications page if exists
+                          }}
+                        >
+                          View all notifications
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 )}
-              >
-                <User className="h-5 w-5 text-gray-600 hover:text-loreal-red transition-colors" />
-              </Button>
-
-              {/* Profile Dropdown */}
-              {showProfileDropdown && (
-                <div
-                  ref={profileDropdownRef}
-                  className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
-                >
-                  {/* Header */}
-                  <div className="px-4 py-3 border-b border-gray-100">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gradient-to-r from-loreal-red to-loreal-red-light rounded-full flex items-center justify-center">
-                        <User className="h-5 w-5 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900">Nicholas Tan</h3>
-                        <p className="text-sm text-gray-500">Marketing Manager</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Menu Items */}
-                  <div className="py-2">
-                    <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                      View Profile
-                    </button>
-                    <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                      Account Settings
-                    </button>
-                    <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                      Preferences
-                    </button>
-                    <div className="border-t border-gray-100 mt-2 pt-2">
-                      <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                        Help & Support
-                      </button>
-                      <button className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors">
-                        Sign Out
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
+      </nav>
+
+      {/* Fixed Profile Button - Bottom Left */}
+      <div className="fixed bottom-4 left-4 z-50">
+        <div className="relative">
+          <Button
+            ref={profileButtonRef}
+            variant="ghost"
+            size="sm"
+            onClick={handleProfileClick}
+            className={cn(
+              "relative w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors flex items-center justify-center p-0 shadow-lg",
+              showProfileDropdown && "bg-gray-200"
+            )}
+          >
+            <User className="h-5 w-5 text-gray-600 hover:text-loreal-red transition-colors" />
+          </Button>
+
+          {/* Profile Dropdown */}
+          {showProfileDropdown && (
+            <div
+              ref={profileDropdownRef}
+              className="absolute left-0 bottom-full mb-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
+            >
+              {/* Header */}
+              <div className="px-4 py-3 border-b border-gray-100">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-loreal-red to-loreal-red-light rounded-full flex items-center justify-center">
+                    <User className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900">Nicholas Tan</h3>
+                    <p className="text-sm text-gray-500">Marketing Manager</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Menu Items */}
+              <div className="py-2">
+                <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                  View Profile
+                </button>
+                <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                  Account Settings
+                </button>
+                <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                  Preferences
+                </button>
+                <div className="border-t border-gray-100 mt-2 pt-2">
+                  <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                    Help & Support
+                  </button>
+                  <button className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors">
+                    Sign Out
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </nav>
+    </>
   );
 }

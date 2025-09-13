@@ -64,6 +64,7 @@ interface ChartRendererProps {
   enablePan?: boolean;  // Legacy prop - no scrolling through dates
   showDataPoints?: boolean;
   showResetButton?: boolean; // Legacy prop - static charts need no controls
+  showLegend?: boolean; // Control legend display
 }
 
 export default function ChartRenderer({
@@ -79,7 +80,8 @@ export default function ChartRenderer({
   enableZoom = false,
   enablePan = false,
   showDataPoints = false,
-  showResetButton = false
+  showResetButton = false,
+  showLegend = true
 }: ChartRendererProps) {
   // Prepare labels and datasets based on chart type
   let labels, datasets;
@@ -228,7 +230,7 @@ export default function ChartRenderer({
     },
     plugins: {
       legend: {
-        display: chartType === 'pie',
+        display: showLegend && chartType === 'pie',
         position: chartType === 'pie' ? 'bottom' as const : 'top' as const,
       },
       tooltip: {
