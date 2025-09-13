@@ -40,7 +40,6 @@ def query_to_csv(query, output_path):
             writer.writerow(list(row.values()))
     print(f"Results saved to {output_path}")
 
-# hard code function for prototype
 def query(query):
     listofJSON = []
     results = client.query(query).result()
