@@ -25,8 +25,6 @@ The backend is organized into the following directories:
 
 ### Installation
 
-Each module within the backend has its own `requirements.txt` file. To install the dependencies for a specific module, navigate to its directory and run:
-
 ```bash
 python -m venv .venv
 source .venv/bin/activate
