@@ -159,5 +159,7 @@ def main(df):
     # Save results
     save_results(df_with_sentiment, output_file)
     
+    return df_with_sentiment
+    
 if __name__ == "__main__":
     main()
