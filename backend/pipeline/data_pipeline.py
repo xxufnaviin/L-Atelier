@@ -10,6 +10,7 @@ import sys
 
 sys.path.append(".")
 from ml.sentiment_analysis import main as tag_videos
+from ml.demographics_analysis import main as get_demographics
 
 load_dotenv()
 
@@ -138,12 +139,15 @@ def transform(tiktok_df, youtube_df):
 
 def load(df, dataset_id="analyzed_data", table_id="trends"):
     """Load data into BigQuery"""
-    # Save to CSV first
-    tag_videos(df)
+    # Tag videos with sentiment
+    df = tag_videos(df)
+
+    # Get demographics
+    df = get_demographics(df)
     
-    output_path = "ml/data/analyzed_videos.csv"
-    # df.to_csv(output_path, index=False)
-    # print(f"Combined data saved to {output_path}")
+    output_path = "ml/data/analyzed_videos_with_demographics.csv"
+    df.to_csv(output_path, index=False)
+    print(f"Combined data saved to {output_path}")
 
     # Ensure dataset exists
     dataset_ref = f"{client.project}.{dataset_id}"
