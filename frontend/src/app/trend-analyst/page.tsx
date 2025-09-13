@@ -448,7 +448,7 @@ export default function TrendAnalyst() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-            {contentDurationData.map((content) => (
+              {contentDurationData.map((content) => (
               <ContentDurationCard
                 key={content.id}
                 type={content.type}
@@ -528,9 +528,10 @@ export default function TrendAnalyst() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 items-start">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
             {/* Charts Section */}
-            <div className="xl:col-span-2">
+            <div className="xl:col-span-1">
+              <h3 className="text-lg font-semibold text-gray-900 mb-6">Platform Sentiment Analysis</h3>
               <div className="grid grid-cols-1 gap-6">
                 {sentimentData.map((platform, index) => (
                   <div key={index} className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
@@ -545,12 +546,13 @@ export default function TrendAnalyst() {
                       {/* Pie Chart */}
                       <div className="flex justify-center">
                         <div className="w-48 h-48">
-                          <ChartRenderer
-                            data={[platform]}
-                            chartType="pie"
+                        <ChartRenderer
+                          data={[platform]}
+                          chartType="pie"
                             height={192}
-                            animated={true}
-                          />
+                          animated={true}
+                            showLegend={false}
+                        />
                         </div>
                       </div>
                       
@@ -558,23 +560,23 @@ export default function TrendAnalyst() {
                       <div className="space-y-4">
                         <div className="flex items-center justify-between py-2 px-3 bg-green-50 rounded-lg">
                           <div className="flex items-center gap-3">
-                            <div className="w-4 h-4 bg-green-500 rounded-full"></div>
+                          <div className="w-4 h-4 bg-green-500 rounded-full"></div>
                             <span className="text-sm font-medium text-gray-700">Positive</span>
-                          </div>
+                        </div>
                           <span className="text-lg font-bold text-green-600">{platform.positive}%</span>
                         </div>
                         
                         <div className="flex items-center justify-between py-2 px-3 bg-yellow-50 rounded-lg">
                           <div className="flex items-center gap-3">
-                            <div className="w-4 h-4 bg-yellow-500 rounded-full"></div>
+                          <div className="w-4 h-4 bg-yellow-500 rounded-full"></div>
                             <span className="text-sm font-medium text-gray-700">Neutral</span>
-                          </div>
+                        </div>
                           <span className="text-lg font-bold text-yellow-600">{platform.neutral}%</span>
                         </div>
                         
                         <div className="flex items-center justify-between py-2 px-3 bg-red-50 rounded-lg">
                           <div className="flex items-center gap-3">
-                            <div className="w-4 h-4 bg-red-500 rounded-full"></div>
+                          <div className="w-4 h-4 bg-red-500 rounded-full"></div>
                             <span className="text-sm font-medium text-gray-700">Negative</span>
                           </div>
                           <span className="text-lg font-bold text-red-600">{platform.negative}%</span>
@@ -590,34 +592,34 @@ export default function TrendAnalyst() {
             <div className="xl:col-span-1">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Sentiment Insights</h3>
-                <div className="space-y-4">
+            <div className="space-y-4">
                   <div className="p-4 bg-green-50 border border-green-200 rounded-xl">
                     <h4 className="font-semibold text-green-800 mb-3 flex items-center gap-2">
                       <Smile className="h-4 w-4" />
                       Top Positive Keywords
                     </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {["glowing", "amazing", "perfect", "love it", "game changer"].map((keyword, idx) => (
+                  <div className="flex flex-wrap gap-2">
+                    {["glowing", "amazing", "perfect", "love it", "game changer"].map((keyword, idx) => (
                         <span key={idx} className="px-3 py-1 bg-green-200 text-green-800 text-xs rounded-full font-medium">
-                          {keyword}
-                        </span>
-                      ))}
-                    </div>
+                        {keyword}
+                      </span>
+                    ))}
                   </div>
-                  
+                </div>
+                
                   <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
                     <h4 className="font-semibold text-red-800 mb-3 flex items-center gap-2">
                       <Frown className="h-4 w-4" />
                       Common Concerns
                     </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {["too expensive", "doesn't work", "skin irritation", "false claims"].map((concern, idx) => (
+                  <div className="flex flex-wrap gap-2">
+                    {["too expensive", "doesn't work", "skin irritation", "false claims"].map((concern, idx) => (
                         <span key={idx} className="px-3 py-1 bg-red-200 text-red-800 text-xs rounded-full font-medium">
-                          {concern}
-                        </span>
-                      ))}
-                    </div>
+                        {concern}
+                      </span>
+                    ))}
                   </div>
+                </div>
 
                   <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl">
                     <h4 className="font-semibold text-blue-800 mb-3 flex items-center gap-2">
@@ -637,8 +639,8 @@ export default function TrendAnalyst() {
                         <span className="text-blue-500 mt-1">•</span>
                         <span><strong>YouTube:</strong> In-depth tutorials and honest long-term reviews</span>
                       </li>
-                    </ul>
-                  </div>
+                  </ul>
+                </div>
 
                   <div className="p-4 bg-purple-50 border border-purple-200 rounded-xl">
                     <h4 className="font-semibold text-purple-800 mb-3 flex items-center gap-2">
@@ -646,8 +648,8 @@ export default function TrendAnalyst() {
                       Recommendation
                     </h4>
                     <p className="text-sm text-purple-700 leading-relaxed">
-                      Instagram shows highest positive sentiment (82%). Focus content strategy on this platform for maximum brand perception impact.
-                    </p>
+                    Instagram shows highest positive sentiment (82%). Focus content strategy on this platform for maximum brand perception impact.
+                  </p>
                   </div>
                 </div>
               </div>
