@@ -135,29 +135,83 @@ export default function Dashboard() {
             >
               {latestTrends.map((trend, index) => (
                 <div key={trend.id} className="min-w-full">
-                  <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                      <div>
-                        <h3 className="text-xl font-bold text-loreal-red">{trend.name}</h3>
-                        <p className="text-muted-foreground">Trending on {trend.platform}</p>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="text-center">
-                          <p className="text-2xl font-bold text-green-600">{trend.engagement}</p>
-                          <p className="text-sm text-muted-foreground">Engagement</p>
+                  <div className="bg-gradient-to-br from-white via-gray-50 to-gray-100 border border-gray-200 rounded-xl p-8 shadow-sm hover:shadow-md transition-all duration-300">
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+                      {/* Main Trend Info */}
+                      <div className="lg:col-span-2 space-y-4">
+                        <div className="flex items-start gap-3">
+                          <div className="p-2 bg-loreal-red/10 rounded-lg flex-shrink-0">
+                            <Hash className="h-5 w-5 text-loreal-red" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="text-2xl font-bold text-gray-900 mb-2">{trend.name}</h3>
+                            <p className="text-sm text-gray-600 flex items-center gap-2 mb-3">
+                              <span className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0"></span>
+                              Trending on {trend.platform}
+                            </p>
+                            <div className="flex items-center gap-4 text-sm text-gray-600">
+                              <div className="flex items-center gap-1">
+                                <Clock className="h-4 w-4" />
+                                <span>2h ago</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Users className="h-4 w-4" />
+                                <span>Active now</span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-center">
-                          <p className="text-2xl font-bold text-blue-600">{trend.growth}</p>
-                          <p className="text-sm text-muted-foreground">Growth</p>
+                      </div>
+
+                      {/* Metrics Grid */}
+                      <div className="lg:col-span-2">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="text-center p-4 bg-green-50 rounded-lg border border-green-200 h-full">
+                            <div className="flex items-center justify-center gap-2 mb-3">
+                              <TrendingUp className="h-4 w-4 text-green-600" />
+                              <span className="text-sm font-medium text-green-700">Engagement</span>
+                            </div>
+                            <p className="text-3xl font-bold text-green-600 mb-1">{trend.engagement}</p>
+                            <p className="text-xs text-green-600">+12% from yesterday</p>
+                          </div>
+                          <div className="text-center p-4 bg-blue-50 rounded-lg border border-blue-200 h-full">
+                            <div className="flex items-center justify-center gap-2 mb-3">
+                              <BarChart3 className="h-4 w-4 text-blue-600" />
+                              <span className="text-sm font-medium text-blue-700">Growth</span>
+                            </div>
+                            <p className="text-3xl font-bold text-blue-600 mb-1">{trend.growth}</p>
+                            <p className="text-xs text-blue-600">+8% this week</p>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex justify-end">
-                        <Link href={`/trending-hashtags`}>
-                          <Button variant="outline">
-                            <Eye className="h-4 w-4 mr-2" />
-                            View Details
-                          </Button>
-                        </Link>
+
+                      {/* Action Button & Related Tags */}
+                      <div className="lg:col-span-1">
+                        <div className="space-y-5">
+                          <Link href={`/trending-hashtags`}>
+                            <Button className="w-full bg-loreal-red hover:bg-loreal-red/90 text-white h-11">
+                              <Eye className="h-4 w-4 mr-2" />
+                              View Details
+                            </Button>
+                          </Link>
+                          
+                          <div className="space-y-3">
+                            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Related Tags</p>
+                            <div className="flex flex-wrap gap-2">
+                              {trend.relatedTags?.slice(0, 3).map((tag, idx) => (
+                                <span key={idx} className="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">
+                                  #{tag}
+                                </span>
+                              )) || (
+                                <>
+                                  <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">#beauty</span>
+                                  <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">#skincare</span>
+                                  <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">#trending</span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
