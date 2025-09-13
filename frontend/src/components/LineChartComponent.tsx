@@ -1,6 +1,20 @@
 "use client";
 
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
+
+// Dynamically import Chart.js components to avoid SSR issues
+const ChartComponent = dynamic(
+  () => import('./ChartRenderer'),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="flex items-center justify-center h-full bg-gray-50 rounded animate-pulse">
+        <div className="text-gray-400">Loading chart...</div>
+      </div>
+    )
+  }
+);
 
 interface LineChartComponentProps {
   data: Array<{
@@ -17,52 +31,30 @@ interface LineChartComponentProps {
   showAxis?: boolean;
   showGrid?: boolean;
   isComparison?: boolean;
+  animated?: boolean;
+  enableZoom?: boolean; // Legacy prop - charts are now static
+  enablePan?: boolean;  // Legacy prop - charts are now static
+  showDataPoints?: boolean;
+  showResetButton?: boolean; // Legacy prop - no controls needed
 }
 
-export default function LineChartComponent({
-  data,
-  dataKey = 'value',
-  color = '#d41e2c',
-  height = 200,
-  showAxis = true,
-  showGrid = false,
-  isComparison = false
-}: LineChartComponentProps) {
-  return (
-    <ResponsiveContainer width="100%" height={height}>
-      <LineChart data={data}>
-        {showGrid && <XAxis dataKey={data[0]?.date ? 'date' : 'day'} hide={!showAxis} />}
-        {showGrid && <YAxis hide={!showAxis} />}
-        
-        {isComparison ? (
-          <>
-            <Line
-              type="monotone"
-              dataKey="global"
-              stroke="#6b7280"
-              strokeWidth={2}
-              dot={false}
-              name="Global"
-            />
-            <Line
-              type="monotone"
-              dataKey="malaysia"
-              stroke={color}
-              strokeWidth={2}
-              dot={false}
-              name="Malaysia"
-            />
-          </>
-        ) : (
-          <Line
-            type="monotone"
-            dataKey={dataKey}
-            stroke={color}
-            strokeWidth={2}
-            dot={false}
-          />
-        )}
-      </LineChart>
-    </ResponsiveContainer>
-  );
+export default function LineChartComponent(props: LineChartComponentProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div 
+        style={{ height: `${props.height || 200}px` }} 
+        className="flex items-center justify-center bg-gray-50 rounded animate-pulse"
+      >
+        <div className="text-gray-400">Loading chart...</div>
+      </div>
+    );
+  }
+
+  return <ChartComponent {...props} />;
 }

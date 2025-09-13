@@ -16,6 +16,9 @@ const config: Config = {
       },
     },
     extend: {
+      fontFamily: {
+        italiana: ['var(--font-italiana)', 'serif'],
+      },
       colors: {
         loreal: {
           red: '#d41e2c',
