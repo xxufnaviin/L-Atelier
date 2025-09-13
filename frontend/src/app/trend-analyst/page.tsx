@@ -4,12 +4,14 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Clock, TrendingDown, MessageSquare, BarChart3, Users, Calendar, Smile, Frown, Meh, AlertTriangle, TrendingUp, Eye, Play, Activity } from 'lucide-react';
+import { Clock, TrendingDown, MessageSquare, BarChart3, Users, Calendar, Smile, Frown, Meh, AlertTriangle, TrendingUp, Eye, Play, Activity, Target } from 'lucide-react';
 import LineChartComponent from '@/components/LineChartComponent';
 import ChartRenderer from '@/components/ChartRenderer';
 import TrendCard from '@/components/TrendCard';
 import InfoPopup from '@/components/InfoPopup';
+import ContentDurationCard from '@/components/ContentDurationCard';
 import { topTrends } from '@/lib/data';
+import { getTrendColor } from '@/utils/trendUtils';
 
 // Platform Performance Data
 const platformPerformanceData = [
@@ -445,70 +447,17 @@ export default function TrendAnalyst() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <h3 className="font-semibold text-lg">Retention by Content Type</h3>
-              {contentDurationData.map((content) => (
-                <div key={content.id} className="p-4 border rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-medium">{content.type}</h4>
-                    <span className="text-sm text-muted-foreground">{content.avgDuration}</span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-4 text-sm">
-                    <div>
-                      <div className="text-green-600 font-semibold">{content.retention}%</div>
-                      <div className="text-muted-foreground">Retention</div>
-                    </div>
-                    <div>
-                      <div className="text-red-500 font-semibold">{content.clickAwayRate}%</div>
-                      <div className="text-muted-foreground">Click Away</div>
-                    </div>
-                    <div>
-                      <div className="text-blue-600 font-semibold">{content.engagement}</div>
-                      <div className="text-muted-foreground">Engagement</div>
-                    </div>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                    <div 
-                      className="bg-loreal-red h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${content.retention}%` }}
-                    ></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="space-y-4">
-              <h3 className="font-semibold text-lg">Key Insights</h3>
-              <div className="space-y-3">
-                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
-                    <TrendingUp className="h-4 w-4 text-green-600" />
-                    <span className="font-medium text-green-800">Optimal Duration</span>
-                  </div>
-                  <p className="text-sm text-green-700">
-                    15-30 second videos show highest retention (85%) with only 15% click-away rate
-                  </p>
-                </div>
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Eye className="h-4 w-4 text-blue-600" />
-                    <span className="font-medium text-blue-800">Engagement Sweet Spot</span>
-                  </div>
-                  <p className="text-sm text-blue-700">
-                    Carousel posts balance engagement (89%) with good retention (82%)
-                  </p>
-                </div>
-                <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
-                    <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                    <span className="font-medium text-yellow-800">Risk Zone</span>
-                  </div>
-                  <p className="text-sm text-yellow-700">
-                    Content over 60 seconds loses 55% of viewers before completion
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            {contentDurationData.map((content) => (
+              <ContentDurationCard
+                key={content.id}
+                type={content.type}
+                retention={content.retention}
+                clickAwayRate={content.clickAwayRate}
+                avgDuration={content.avgDuration}
+                engagement={content.engagement}
+              />
+            ))}
           </div>
         </CardContent>
       </Card>
@@ -552,7 +501,7 @@ export default function TrendAnalyst() {
                   <div className="h-16">
                     <LineChartComponent
                       data={timeData.data}
-                      color="#d41e2c"
+                      color={getTrendColor(timeData.data)}
                       height={64}
                       showAxis={false}
                     />
@@ -573,43 +522,62 @@ export default function TrendAnalyst() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="mb-4">
+          <div className="mb-6">
             <p className="text-sm text-muted-foreground">
               Pie charts display sentiment distribution across platforms from user comments and ratings.
             </p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 gap-4">
+          
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 items-start">
+            {/* Charts Section */}
+            <div className="xl:col-span-2">
+              <div className="grid grid-cols-1 gap-6">
                 {sentimentData.map((platform, index) => (
-                  <div key={index} className="border rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-semibold">{platform.platform}</h3>
-                      <span className="text-sm text-muted-foreground">{platform.totalComments} comments</span>
+                  <div key={index} className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-lg font-semibold text-gray-900">{platform.platform}</h3>
+                      <span className="text-sm text-gray-500 bg-gray-50 px-3 py-1 rounded-full">
+                        {platform.totalComments} comments
+                      </span>
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="h-48">
-                        <ChartRenderer
-                          data={[platform]}
-                          chartType="pie"
-                          height={180}
-                          animated={true}
-                        />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                      {/* Pie Chart */}
+                      <div className="flex justify-center">
+                        <div className="w-48 h-48">
+                          <ChartRenderer
+                            data={[platform]}
+                            chartType="pie"
+                            height={192}
+                            animated={true}
+                          />
+                        </div>
                       </div>
                       
-                      <div className="flex flex-col justify-center space-y-3">
-                        <div className="flex items-center gap-2">
-                          <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-                          <span className="text-sm font-medium">{platform.positive}% Positive</span>
+                      {/* Percentage Breakdown */}
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between py-2 px-3 bg-green-50 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <div className="w-4 h-4 bg-green-500 rounded-full"></div>
+                            <span className="text-sm font-medium text-gray-700">Positive</span>
+                          </div>
+                          <span className="text-lg font-bold text-green-600">{platform.positive}%</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-4 h-4 bg-yellow-500 rounded-full"></div>
-                          <span className="text-sm font-medium">{platform.neutral}% Neutral</span>
+                        
+                        <div className="flex items-center justify-between py-2 px-3 bg-yellow-50 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <div className="w-4 h-4 bg-yellow-500 rounded-full"></div>
+                            <span className="text-sm font-medium text-gray-700">Neutral</span>
+                          </div>
+                          <span className="text-lg font-bold text-yellow-600">{platform.neutral}%</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-4 h-4 bg-red-500 rounded-full"></div>
-                          <span className="text-sm font-medium">{platform.negative}% Negative</span>
+                        
+                        <div className="flex items-center justify-between py-2 px-3 bg-red-50 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <div className="w-4 h-4 bg-red-500 rounded-full"></div>
+                            <span className="text-sm font-medium text-gray-700">Negative</span>
+                          </div>
+                          <span className="text-lg font-bold text-red-600">{platform.negative}%</span>
                         </div>
                       </div>
                     </div>
@@ -618,45 +586,69 @@ export default function TrendAnalyst() {
               </div>
             </div>
 
-            <div className="space-y-4">
-              <h3 className="font-semibold text-lg">Sentiment Insights</h3>
-              <div className="space-y-3">
-                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <h4 className="font-medium text-green-800 mb-2">Top Positive Keywords</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {["glowing", "amazing", "perfect", "love it", "game changer"].map((keyword, idx) => (
-                      <span key={idx} className="px-2 py-1 bg-green-200 text-green-800 text-xs rounded">
-                        {keyword}
-                      </span>
-                    ))}
+            {/* Sentiment Insights Section */}
+            <div className="xl:col-span-1">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-6">Sentiment Insights</h3>
+                <div className="space-y-4">
+                  <div className="p-4 bg-green-50 border border-green-200 rounded-xl">
+                    <h4 className="font-semibold text-green-800 mb-3 flex items-center gap-2">
+                      <Smile className="h-4 w-4" />
+                      Top Positive Keywords
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {["glowing", "amazing", "perfect", "love it", "game changer"].map((keyword, idx) => (
+                        <span key={idx} className="px-3 py-1 bg-green-200 text-green-800 text-xs rounded-full font-medium">
+                          {keyword}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                  <h4 className="font-medium text-red-800 mb-2">Common Concerns</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {["too expensive", "doesn't work", "skin irritation", "false claims"].map((concern, idx) => (
-                      <span key={idx} className="px-2 py-1 bg-red-200 text-red-800 text-xs rounded">
-                        {concern}
-                      </span>
-                    ))}
+                  
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+                    <h4 className="font-semibold text-red-800 mb-3 flex items-center gap-2">
+                      <Frown className="h-4 w-4" />
+                      Common Concerns
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {["too expensive", "doesn't work", "skin irritation", "false claims"].map((concern, idx) => (
+                        <span key={idx} className="px-3 py-1 bg-red-200 text-red-800 text-xs rounded-full font-medium">
+                          {concern}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <h4 className="font-medium text-blue-800 mb-2">Platform Insights</h4>
-                  <ul className="text-sm text-blue-700 space-y-1">
-                    <li>• Instagram: More detailed reviews with before/after photos</li>
-                    <li>• TikTok: Quick reactions, viral sharing patterns</li>
-                    <li>• YouTube: In-depth tutorials and honest long-term reviews</li>
-                  </ul>
-                </div>
+                  <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                    <h4 className="font-semibold text-blue-800 mb-3 flex items-center gap-2">
+                      <BarChart3 className="h-4 w-4" />
+                      Platform Insights
+                    </h4>
+                    <ul className="text-sm text-blue-700 space-y-2">
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-500 mt-1">•</span>
+                        <span><strong>Instagram:</strong> More detailed reviews with before/after photos</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-500 mt-1">•</span>
+                        <span><strong>TikTok:</strong> Quick reactions, viral sharing patterns</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-500 mt-1">•</span>
+                        <span><strong>YouTube:</strong> In-depth tutorials and honest long-term reviews</span>
+                      </li>
+                    </ul>
+                  </div>
 
-                <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
-                  <h4 className="font-medium text-purple-800 mb-2">Recommendation</h4>
-                  <p className="text-sm text-purple-700">
-                    Instagram shows highest positive sentiment (82%). Focus content strategy on this platform for maximum brand perception impact.
-                  </p>
+                  <div className="p-4 bg-purple-50 border border-purple-200 rounded-xl">
+                    <h4 className="font-semibold text-purple-800 mb-3 flex items-center gap-2">
+                      <Target className="h-4 w-4" />
+                      Recommendation
+                    </h4>
+                    <p className="text-sm text-purple-700 leading-relaxed">
+                      Instagram shows highest positive sentiment (82%). Focus content strategy on this platform for maximum brand perception impact.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

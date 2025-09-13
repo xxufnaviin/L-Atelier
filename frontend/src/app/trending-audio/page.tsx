@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Play, Pause, TrendingUp, ArrowLeft, BarChart3, Users, Clock } from 'lucide-react';
 import LineChartComponent from '@/components/LineChartComponent';
 import Link from 'next/link';
+import { getColorByPercentage } from '@/utils/trendUtils';
 import { topTrends } from '@/lib/data';
 import { useState } from 'react';
 
@@ -195,7 +196,7 @@ export default function TrendingAudioPage() {
             <div className="w-64 h-32">
               <LineChartComponent
                 data={trendingAudios[0].data}
-                color="#d41e2c"
+                color={getColorByPercentage(trendingAudios[0].growth)}
                 height={128}
                 showAxis={false}
               />
@@ -277,7 +278,7 @@ export default function TrendingAudioPage() {
                   <div className="h-16">
                     <LineChartComponent
                       data={audio.data}
-                      color="#d41e2c"
+                      color={getColorByPercentage(audio.growth)}
                       height={64}
                       showAxis={false}
                     />

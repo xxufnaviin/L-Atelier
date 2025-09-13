@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Eye, ArrowLeft, BarChart3, Hash, Share2, Heart, TrendingUp, Users, Target } from 'lucide-react';
 import LineChartComponent from '@/components/LineChartComponent';
 import Link from 'next/link';
+import { getColorByPercentage } from '@/utils/trendUtils';
 
 // Extended sample data for trending hashtags
 const trendingHashtags = [
@@ -188,7 +189,7 @@ export default function TrendingHashtagsPage() {
             <div className="w-64 h-32">
               <LineChartComponent
                 data={trendingHashtags[0].data}
-                color="#d41e2c"
+                color={getColorByPercentage(trendingHashtags[0].growth)}
                 height={128}
                 showAxis={false}
               />
@@ -258,7 +259,7 @@ export default function TrendingHashtagsPage() {
                   <div className="h-16">
                     <LineChartComponent
                       data={hashtag.data}
-                      color="#d41e2c"
+                      color={getColorByPercentage(hashtag.growth)}
                       height={64}
                       showAxis={false}
                     />
