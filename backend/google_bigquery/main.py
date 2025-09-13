@@ -39,3 +39,14 @@ def query_to_csv(query, output_path):
         for row in results:
             writer.writerow(list(row.values()))
     print(f"Results saved to {output_path}")
+
+def query(query):
+    listofJSON = []
+    results = client.query(query).result()
+    for rows in results:
+        listofJSON.append(rows.values())
+    
+    return listofJSON[0][0]
+        
+    # print()
+    # return results
