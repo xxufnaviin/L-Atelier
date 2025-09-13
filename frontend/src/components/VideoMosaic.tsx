@@ -4,15 +4,64 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Play } from 'lucide-react';
 import { videos } from '@/lib/data';
 
+interface FilterBy {
+  audio?: string;
+  keyword?: string;
+  platform?: string;
+}
+
 interface VideoMosaicProps {
   selectedVideos?: string[];
   onVideoClick?: (videoId: string) => void;
+  filterBy?: FilterBy;
 }
 
-export default function VideoMosaic({ selectedVideos = [], onVideoClick }: VideoMosaicProps) {
+export default function VideoMosaic({ selectedVideos = [], onVideoClick, filterBy }: VideoMosaicProps) {
+  // Filter videos based on recipe ingredients
+  const getFilteredVideos = () => {
+    if (!filterBy) {
+      return videos.slice(0, 6);
+    }
+
+    let filteredVideos = videos;
+
+    // Filter by audio
+    if (filterBy.audio) {
+      filteredVideos = filteredVideos.filter(video => video.audioId === filterBy.audio);
+    }
+
+    // Filter by keyword
+    if (filterBy.keyword) {
+      filteredVideos = filteredVideos.filter(video => video.keywordId === filterBy.keyword);
+    }
+
+    // Filter by platform
+    if (filterBy.platform) {
+      filteredVideos = filteredVideos.filter(video => video.platform === filterBy.platform);
+    }
+
+    // If no exact matches, fall back to related videos based on individual criteria
+    if (filteredVideos.length === 0) {
+      filteredVideos = videos.filter(video => {
+        return video.audioId === filterBy.audio || 
+               video.keywordId === filterBy.keyword || 
+               video.platform === filterBy.platform;
+      });
+    }
+
+    // If still no matches, show most popular videos
+    if (filteredVideos.length === 0) {
+      filteredVideos = videos.slice().sort((a, b) => b.likes - a.likes);
+    }
+
+    return filteredVideos.slice(0, 6);
+  };
+
+  const displayVideos = getFilteredVideos();
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-      {videos.slice(0, 6).map((video) => (
+      {displayVideos.map((video) => (
         <Card 
           key={video.id} 
           className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105"

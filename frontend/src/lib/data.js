@@ -89,7 +89,10 @@ export const videos = [
     likes: 15000,
     platform: 'TikTok',
     creator: '@skincare_guru',
-    duration: '0:45'
+    duration: '0:45',
+    audioId: 'audio_1', // Viral
+    keywordId: 'kw_1', // Glass Skin
+    tags: ['glass skin', 'skincare', 'korean beauty']
   },
   {
     id: 'vid_2',
@@ -98,7 +101,10 @@ export const videos = [
     likes: 23000,
     platform: 'Instagram',
     creator: '@makeup_artist',
-    duration: '1:20'
+    duration: '1:20',
+    audioId: 'audio_2', // Aesthetic
+    keywordId: 'kw_2', // Vanilla Girl
+    tags: ['vanilla girl', 'minimal makeup', 'natural beauty']
   },
   {
     id: 'vid_3',
@@ -107,7 +113,10 @@ export const videos = [
     likes: 8500,
     platform: 'YouTube',
     creator: '@k_beauty_tips',
-    duration: '3:15'
+    duration: '3:15',
+    audioId: 'audio_3', // Trending
+    keywordId: 'kw_3', // Korean Skincare
+    tags: ['korean skincare', 'routine', 'skincare steps']
   },
   {
     id: 'vid_4',
@@ -116,7 +125,10 @@ export const videos = [
     likes: 12000,
     platform: 'TikTok',
     creator: '@glowup_queen',
-    duration: '0:30'
+    duration: '0:30',
+    audioId: 'audio_2', // Aesthetic
+    keywordId: 'kw_5', // Dewy Makeup
+    tags: ['dewy skin', 'glowing skin', 'makeup']
   },
   {
     id: 'vid_5',
@@ -125,16 +137,155 @@ export const videos = [
     likes: 9800,
     platform: 'Instagram',
     creator: '@natural_beauty',
-    duration: '2:10'
+    duration: '2:10',
+    audioId: 'audio_4', // Chill
+    keywordId: 'kw_6', // Minimalist Beauty
+    tags: ['natural beauty', 'minimal routine', 'skincare']
+  },
+  {
+    id: 'vid_6',
+    title: 'Glass Skin with Aesthetic Vibes',
+    thumbnailUrl: '/placeholder-video1.jpg',
+    likes: 18500,
+    platform: 'TikTok',
+    creator: '@aesthetic_beauty',
+    duration: '1:05',
+    audioId: 'audio_2', // Aesthetic
+    keywordId: 'kw_1', // Glass Skin
+    tags: ['glass skin', 'aesthetic', 'skincare']
+  },
+  {
+    id: 'vid_7',
+    title: 'Vanilla Girl Look Tutorial',
+    thumbnailUrl: '/placeholder-video2.jpg',
+    likes: 31000,
+    platform: 'Instagram',
+    creator: '@minimal_makeup',
+    duration: '0:58',
+    audioId: 'audio_1', // Viral
+    keywordId: 'kw_2', // Vanilla Girl
+    tags: ['vanilla girl', 'tutorial', 'makeup']
+  },
+  {
+    id: 'vid_8',
+    title: 'Korean Beauty Secrets',
+    thumbnailUrl: '/placeholder-video3.jpg',
+    likes: 14200,
+    platform: 'YouTube',
+    creator: '@kbeauty_expert',
+    duration: '4:20',
+    audioId: 'audio_3', // Trending
+    keywordId: 'kw_3', // Korean Skincare
+    tags: ['korean beauty', 'skincare', 'beauty secrets']
   }
 ];
 
-export const heroInsight = {
-  title: "Malaysian Beauty Market Alert",
-  description: "#VanillaGirl trend is peaking in Malaysia, 3 weeks behind global trend cycle. Perfect timing for campaign launch.",
-  metric: "89% growth this week",
-  action: "Launch recommended within 7 days"
+// Regional data sets
+export const dataByRegion = {
+  malaysia: {
+    heroInsight: {
+      title: "Malaysian Beauty Market Alert",
+      description: "The #VanillaGirl trend is peaking in Malaysia, 3 weeks behind global trend cycle. Perfect timing for campaign launch.",
+      metric: "89% growth this week",
+      action: "Launch recommended within 7 days"
+    },
+    performanceMetrics: [
+      {
+        title: "Campaign ROI",
+        value: "312%",
+        change: "+24%",
+        trend: "up",
+        color: "text-green-600"
+      },
+      {
+        title: "Engagement Rate",
+        value: "4.8%",
+        change: "+12%", 
+        trend: "up",
+        color: "text-blue-600"
+      },
+      {
+        title: "Video Views",
+        value: "2.4M",
+        change: "+18%",
+        trend: "up", 
+        color: "text-purple-600"
+      },
+      {
+        title: "Trend Accuracy",
+        value: "89%",
+        change: "+5%",
+        trend: "up",
+        color: "text-orange-600"
+      }
+    ],
+    latestTrends: [
+      { id: 1, name: "#CleanGirl", engagement: "92%", growth: "+45%", platform: "TikTok" },
+      { id: 2, name: "#GlassSkin", engagement: "88%", growth: "+38%", platform: "Instagram" },
+      { id: 3, name: "#SkinCycling", engagement: "75%", growth: "+28%", platform: "YouTube" },
+      { id: 4, name: "#DewyMakeup", engagement: "82%", growth: "+22%", platform: "TikTok" },
+      { id: 5, name: "#NaturalGlow", engagement: "79%", growth: "+19%", platform: "Instagram" },
+      { id: 6, name: "#MinimalMakeup", engagement: "71%", growth: "+15%", platform: "TikTok" },
+    ],
+    trendInsight: {
+      title: "Trend Insight",
+      message: "Malaysia is now leading the #VanillaGirl trend, showing 62% engagement while global markets are declining to 30%. This presents a unique opportunity for localized campaigns."
+    }
+  },
+  global: {
+    heroInsight: {
+      title: "Global Beauty Trends Overview",
+      description: "Global beauty market shows diverse regional preferences. #CleanGirl leads worldwide with strong momentum in Western markets.",
+      metric: "156% global reach",
+      action: "Multi-regional campaign recommended"
+    },
+    performanceMetrics: [
+      {
+        title: "Global ROI",
+        value: "285%",
+        change: "+18%",
+        trend: "up",
+        color: "text-green-600"
+      },
+      {
+        title: "Avg Engagement",
+        value: "3.9%",
+        change: "+8%", 
+        trend: "up",
+        color: "text-blue-600"
+      },
+      {
+        title: "Total Views",
+        value: "18.7M",
+        change: "+25%",
+        trend: "up", 
+        color: "text-purple-600"
+      },
+      {
+        title: "Market Coverage",
+        value: "94%",
+        change: "+12%",
+        trend: "up",
+        color: "text-orange-600"
+      }
+    ],
+    latestTrends: [
+      { id: 1, name: "#CleanGirl", engagement: "95%", growth: "+52%", platform: "TikTok" },
+      { id: 2, name: "#SkinCare", engagement: "89%", growth: "+41%", platform: "Instagram" },
+      { id: 3, name: "#GlowUp", engagement: "84%", growth: "+35%", platform: "YouTube" },
+      { id: 4, name: "#Minimalism", engagement: "78%", growth: "+29%", platform: "TikTok" },
+      { id: 5, name: "#SelfCare", engagement: "76%", growth: "+26%", platform: "Instagram" },
+      { id: 6, name: "#Wellness", engagement: "73%", growth: "+23%", platform: "TikTok" },
+    ],
+    trendInsight: {
+      title: "Global Market Insight",
+      message: "Global beauty trends show strong cross-cultural adoption. #CleanGirl maintains 95% engagement across Western markets while Asian markets favor #GlassSkin. Multi-regional campaigns recommended for maximum impact."
+    }
+  }
 };
+
+// Legacy export for backward compatibility
+export const heroInsight = dataByRegion.malaysia.heroInsight;
 
 export const predictionData = [
   { day: 1, engagement: 100 },
@@ -154,7 +305,7 @@ export const predictionData = [
 ];
 
 export const chatPrompts = [
-  "What beauty trends are emerging in Southeast Asia?",
+  "What's trending in beauty?",
   "How does the Malaysian beauty market differ from global trends?",
   "Which L'Oréal products align with current trending keywords?",
   "What's the optimal posting time for beauty content in Malaysia?",
@@ -162,7 +313,7 @@ export const chatPrompts = [
 ];
 
 export const chatResponses = {
-  "What beauty trends are emerging in Southeast Asia?": "Based on our analysis, Southeast Asia is seeing a strong rise in 'Glass Skin' and minimalist beauty trends, with a 67% increase in related content. The region shows particular interest in K-beauty influenced routines and natural, dewy finishes. Malaysia specifically is leading in the adoption of the #VanillaGirl aesthetic.",
+  "What's trending in beauty?": "Based on our analysis, Southeast Asia is seeing a strong rise in 'Glass Skin' and minimalist beauty trends, with a 67% increase in related content. The region shows particular interest in K-beauty influenced routines and natural, dewy finishes. Malaysia specifically is leading in the adoption of the #VanillaGirl aesthetic.",
   
   "How does the Malaysian beauty market differ from global trends?": "Malaysian consumers tend to adopt global beauty trends 2-3 weeks after they peak internationally, but with higher engagement rates (+34% vs global average). They show stronger preference for skincare-focused content and multi-step routines. The market is particularly responsive to influencer-driven trends from Singapore and Thailand.",
   
