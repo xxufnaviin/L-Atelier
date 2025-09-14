@@ -6,6 +6,7 @@ import LineChartComponent from './LineChartComponent';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { getTrendColor, getColorByPercentage } from '@/utils/trendUtils';
 
 interface TrendCardProps {
   type: 'audio' | 'keyword' | 'hashtag' | 'decay';
@@ -104,7 +105,14 @@ export default function TrendCard({ type, data }: TrendCardProps) {
 
   const getChartColor = () => {
     if (type === 'decay') return '#ef4444';
-    return '#d41e2c';
+    
+    // For other types, determine color based on trend data
+    if (data.growth !== undefined) {
+      return getColorByPercentage(data.growth);
+    }
+    
+    // Fallback to analyzing the actual data points
+    return getTrendColor(data.data);
   };
 
   return (

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { TrendingUp, ArrowLeft, BarChart3, Hash, Search, Target } from 'lucide-react';
 import LineChartComponent from '@/components/LineChartComponent';
 import Link from 'next/link';
+import { getColorByPercentage } from '@/utils/trendUtils';
 
 // Extended sample data for trending keywords
 const trendingKeywords = [
@@ -182,7 +183,7 @@ export default function TrendingKeywordsPage() {
             <div className="w-64 h-32">
               <LineChartComponent
                 data={trendingKeywords[1].data}
-                color="#d41e2c"
+                color={getColorByPercentage(trendingKeywords[1].growth)}
                 height={128}
                 showAxis={false}
               />
@@ -244,7 +245,7 @@ export default function TrendingKeywordsPage() {
                   <div className="h-16">
                     <LineChartComponent
                       data={keyword.data}
-                      color="#d41e2c"
+                      color={getColorByPercentage(keyword.growth)}
                       height={64}
                       showAxis={false}
                     />

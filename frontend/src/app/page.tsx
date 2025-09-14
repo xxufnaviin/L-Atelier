@@ -156,41 +156,78 @@ export default function Dashboard() {
             >
               {latestTrends.map((trend, index) => (
                 <div key={trend.id} className="min-w-full">
-                  <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-10 shadow-lg border border-gray-200">
-                    <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-                      {/* Left: Hashtag and Platform */}
-                      <div className="text-center lg:text-left flex-1">
-                        <div className="inline-flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-full shadow-sm mb-3">
-                          <div className="w-1.5 h-1.5 bg-loreal-red rounded-full animate-pulse"></div>
-                          <span className="text-xs font-medium text-gray-600">LIVE TRENDING</span>
-                        </div>
-                        <h3 className="text-2xl font-bold text-loreal-red mb-3 tracking-tight">{trend.name}</h3>
-                        <div className="flex items-center justify-center lg:justify-start gap-2">
-                          <span className="text-gray-600 text-base">Trending on</span>
-                          <span className="bg-black text-white px-3 py-1 rounded-full text-base font-semibold">{trend.platform}</span>
+                  <div className="bg-gradient-to-br from-white via-gray-50 to-gray-100 border border-gray-200 rounded-xl p-8 shadow-sm hover:shadow-md transition-all duration-300">
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                      {/* Main Trend Info */}
+                      <div className="lg:col-span-2 space-y-4">
+                        <div className="flex items-start gap-6">
+                          <div className="w-16 h-24 bg-white border border-gray-200 rounded-3xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                              <Sparkles className="h-6 w-6 text-gray-600" />
+                          </div>
+                          <div className="flex-1 flex flex-col justify-between min-h-[98px]">
+                            <div>
+                              <h3 className="text-2xl font-bold text-gray-900 mb-2">{trend.name}</h3>
+                              <p className="text-sm text-gray-600 flex items-center gap-2">
+                                <span className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0"></span>
+                                Trending on {trend.platform}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-4 text-sm text-gray-600">
+                              <div className="flex items-center gap-1">
+                                <Clock className="h-4 w-4" />
+                                <span>2h ago</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Users className="h-4 w-4" />
+                                <span>Active now</span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      
-                      {/* Center: Metrics */}
-                      <div className="flex gap-6 flex-1 justify-center">
-                        <div className="text-center bg-white/70 rounded-xl p-4 shadow-md border border-green-200 min-w-[100px]">
-                          <p className="text-2xl font-bold text-green-600 mb-1">{trend.engagement}</p>
-                          <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Engagement</p>
-                        </div>
-                        <div className="text-center bg-white/70 rounded-xl p-4 shadow-md border border-blue-200 min-w-[100px]">
-                          <p className="text-2xl font-bold text-blue-600 mb-1">{trend.growth}</p>
-                          <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Growth</p>
+
+                      {/* Metrics Grid */}
+                      <div className="lg:col-span-2 flex justify-center">
+                        <div className="grid grid-cols-2 gap-4 max-w-2xl">
+                          <div className="text-left p-4 bg-green-50 rounded-lg border border-green-200 h-full">
+                            <div className="flex items-center gap-2 mb-3">
+                              <TrendingUp className="h-4 w-4 text-green-600" />
+                              <span className="text-sm font-medium text-green-700">Engagement</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <p className="text-3xl font-bold text-green-600">{trend.engagement}</p>
+                              <p className="text-xs text-green-600">+12% from yesterday</p>
+                            </div>
+                          </div>
+                          <div className="text-left p-4 bg-blue-50 rounded-lg border border-blue-200 h-full">
+                            <div className="flex items-center gap-2 mb-3">
+                              <BarChart3 className="h-4 w-4 text-blue-600" />
+                              <span className="text-sm font-medium text-blue-700">Growth</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <p className="text-3xl font-bold text-blue-600">{trend.growth}</p>
+                              <p className="text-xs text-blue-600">+8% this week</p>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      
-                      {/* Right: Action Button */}
-                      <div className="flex justify-center flex-1">
-                        <Link href={`/trending-hashtags`}>
-                          <Button className="bg-loreal-red hover:bg-loreal-red/90 text-white px-4 py-4 rounded-md font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
-                            <Eye className="h-5 w-5 mr-3" />
-                            View Details
-                          </Button>
-                        </Link>
+
+                      {/* Action Buttons */}
+                      <div className="lg:col-span-1">
+                        <div className="space-y-4">
+                          <Link href="/recipe-builder">
+                            <Button variant="ghost" className="w-full h-11 hover:text-loreal-red transition-colors">
+                              <Sparkles className="h-4 w-4 mr-2" />
+                              Get Trend Recipe
+                            </Button>
+                          </Link>
+                          <Link href={`/trending-hashtags`}>
+                            <Button className="w-full bg-loreal-red hover:bg-loreal-red/90 text-white h-11">
+                              <Eye className="h-4 w-4 mr-2" />
+                              View Details
+                            </Button>
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </div>

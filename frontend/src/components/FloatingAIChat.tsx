@@ -196,8 +196,8 @@ export default function FloatingAIChat() {
           datasets: [{
             label: 'Beauty Trends Performance',
             data: [45, 67, 78, 89],
-            borderColor: '#d41e2c',
-            backgroundColor: 'rgba(212, 30, 44, 0.1)',
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
             tension: 0.4,
             fill: true
           }]
