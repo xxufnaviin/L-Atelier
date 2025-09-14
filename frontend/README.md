@@ -1,4 +1,4 @@
-# GlowPulse AI - Beauty Trend Intelligence Platform
+# L'Atelier - Beauty Trend Intelligence Platform
 
 A Next.js 14 frontend prototype for L'Oréal's beauty trend analysis dashboard, focusing on the Malaysian market with global insights.
 
