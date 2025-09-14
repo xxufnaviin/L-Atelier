@@ -156,6 +156,7 @@ export default function TrendingHashtagsPage() {
         </div>
       </div>
 
+
       {/* Top Performer Highlight */}
       <Card className="border-loreal-red/20 bg-gradient-to-r from-loreal-red/5 to-transparent">
         <CardContent className="p-6">
@@ -492,23 +493,6 @@ export default function TrendingHashtagsPage() {
         </CardContent>
       </Card>
 
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-4">
-            <Button variant="outline">
-              <BarChart3 className="h-4 w-4 mr-2" />
-              Download Hashtag Report
-            </Button>
-            <Button variant="outline">
-              Set Hashtag Alerts
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

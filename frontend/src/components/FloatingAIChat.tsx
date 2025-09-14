@@ -4,12 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Bot, MessageCircle, X, Send, Sparkles, TrendingUp, BarChart3, Users, Navigation, Wand2, Video, Target } from 'lucide-react';
+import { Bot, MessageCircle, X, Send, Sparkles, TrendingUp, BarChart3, Users, Navigation, Wand2, Video, Target, Maximize2 } from 'lucide-react';
 import { chatPrompts, chatResponses } from '@/lib/data';
 import { useGlobalStore } from '@/lib/store';
 import { mcpService } from '@/lib/mcpService';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import ChartModal from './ChartModal';
 
 // Dynamically import the chart component to avoid SSR issues
 const AIChatChart = dynamic(() => import('./AIChatChart'), {
@@ -48,12 +49,29 @@ export default function FloatingAIChat() {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isChartModalOpen, setIsChartModalOpen] = useState(false);
+  const [selectedChartData, setSelectedChartData] = useState<ChartData | null>(null);
+  const [selectedChartTitle, setSelectedChartTitle] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when messages change
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Handle chart click to open modal
+  const handleChartClick = (chartData: ChartData, title: string) => {
+    setSelectedChartData(chartData);
+    setSelectedChartTitle(title);
+    setIsChartModalOpen(true);
+  };
+
+  // Close chart modal
+  const closeChartModal = () => {
+    setIsChartModalOpen(false);
+    setSelectedChartData(null);
+    setSelectedChartTitle('');
   };
 
   useEffect(() => {
@@ -437,7 +455,22 @@ export default function FloatingAIChat() {
                       {/* Chart Display */}
                       {message.chartData && !message.isUser && (
                         <div className="mt-4 p-3 bg-white rounded-lg border">
-                          <div className="h-64 w-full">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm font-medium text-gray-700">Trend Analysis Chart</span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleChartClick(message.chartData!, "Trend Analysis Chart")}
+                              className="text-loreal-red hover:text-loreal-red/80 hover:bg-loreal-red/10"
+                            >
+                              <Maximize2 className="h-4 w-4 mr-1" />
+                              Expand
+                            </Button>
+                          </div>
+                          <div 
+                            className="h-64 w-full cursor-pointer hover:opacity-90 transition-opacity"
+                            onClick={() => handleChartClick(message.chartData!, "Trend Analysis Chart")}
+                          >
                             <AIChatChart chartData={message.chartData} />
                           </div>
                         </div>
@@ -568,6 +601,14 @@ export default function FloatingAIChat() {
           </Card>
         </div>
       )}
+
+      {/* Chart Modal */}
+      <ChartModal
+        isOpen={isChartModalOpen}
+        onClose={closeChartModal}
+        chartData={selectedChartData}
+        title={selectedChartTitle}
+      />
     </>
   );
 }
